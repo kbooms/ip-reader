@@ -1,3 +1,4 @@
+import model.Guest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,14 +18,18 @@ public class IpReader {
     public static final String API_BASE_URL = "https://api.myip.com";
 
     public static void main(String[] args) {
+        System.out.println("Making API call to api.myip.com");
         RestTemplate restTemplate = new RestTemplate();
-        // get the ip address as part of a ResponseEntity
+        // get the ip address data as a Guest object
         ResponseEntity response = restTemplate.getForEntity(API_BASE_URL, String.class);
-        // Comes in as a String for now. I should make this into a model class, and getForObject instead.
-        // I think that will make it easier to parse the data
-
-        // displays the ip address, country, and country code
         System.out.println(response.getBody());
+        System.out.println("API Call Successful");
+
+        System.out.println("Making same call to return as data object");
+        Guest responseGuest = restTemplate.getForObject(API_BASE_URL, Guest.class);
+        // *error* Could not extract response: no suitable HttpMessageConverter found for response type [class model.Guest] and content type [text/html;charset=UTF-8]
+        // broken
+        System.out.println(responseGuest.toString());
 
     }
 }
